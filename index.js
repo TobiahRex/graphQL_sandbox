@@ -1,4 +1,9 @@
+import express from 'express';
+import graphqlHTTP from 'express-graphql';
 import { graphql, buildSchema } from 'graphql';
+
+const PORT = process.env.PORT || 3000;
+const server = express();
 
 const schema = buildSchema(`
   type Video {
@@ -49,7 +54,11 @@ query myFirstQuery {
   }
 }
 `;
+server.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+}));
 
-graphql(schema, query, resolvers)
-.then(results => console.log(JSON.stringify(results, null, 2)))
-.catch(console.error)
+// graphql(schema, query, resolvers)
+// .then(results => console.log(JSON.stringify(results, null, 2)))
+// .catch(console.error)
