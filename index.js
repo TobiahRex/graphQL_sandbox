@@ -43,6 +43,9 @@ const query = `
 query myFirstQuery {
   videos {
     id,
+    title,
+    duration,
+    watched,
   }
 }
 `;
