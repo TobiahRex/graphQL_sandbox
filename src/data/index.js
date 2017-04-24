@@ -11,3 +11,8 @@ const videoB = {
   watched: false,
 }
 const videos = [videoA, videoB];
+const getVideoById = videoId => new Promise((resolve) {
+  const [video] = videos.filter(({ id }) => id === videoId);
+  resolve (video);
+});
+export default getVideoById;

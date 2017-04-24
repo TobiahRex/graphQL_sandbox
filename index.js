@@ -1,6 +1,5 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
-import { videoA, videoB } from './src/data';
 import {
   GraphQLSchema,
   GraphQLObjectType,
@@ -9,10 +8,11 @@ import {
   GraphQLInt,
   GraphQLBoolean,
 } from 'graphql';
+import getVideoById from './src/data';
 
-const PORT = process.env.PORT || 3000;
+
 const server = express();
-
+const PORT = process.env.PORT || 3000;
 const videoType = new GraphQLObjectType({
   name: 'VideoType',
   description: 'A videon on Egghead.io',
