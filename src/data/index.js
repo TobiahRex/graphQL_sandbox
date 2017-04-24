@@ -19,10 +19,12 @@ export const getVideos = () => new Promise((resolve) => {
   resolve(videos);
 });
 export const createVideo = ({ title, duration, watched }) => {
-  videos.push({
+  const video = {
     id: (new Buffer(`${Date.now()}${title}`, 'utf8').toString('base64')),
     title,
     duration,
     watched,
-  });
+  }
+  videos.push(video);
+  return video;
 }
