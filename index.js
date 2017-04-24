@@ -3,13 +3,13 @@ import graphqlHTTP from 'express-graphql';
 import {
   GraphQLSchema,
   GraphQLObjectType,
+  GraphQLNonNull,
   GraphQLID,
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
 } from 'graphql';
 import getVideoById from './src/data';
-
 
 const server = express();
 const PORT = process.env.PORT || 3000;
@@ -44,7 +44,7 @@ const queryType = new GraphQLObjectType({
       type: videoType,
       args: {
         id: {
-          type: GraphQLID,
+          type: new GraphQLNonNull(GraphQLID),
           description: 'The id of the video.',
         }
       },
