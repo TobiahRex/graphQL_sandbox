@@ -73,16 +73,6 @@ const videoB = {
 }
 const videos = [videoA, videoB];
 
-const query = `
-query myFirstQuery {
-  video {
-    id,
-    title,
-    duration,
-    watched,
-  }
-}
-`;
 server.use('/graphql', graphqlHTTP({
   schema,
   graphiql: true,
