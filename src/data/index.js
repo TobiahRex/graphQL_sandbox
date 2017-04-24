@@ -18,3 +18,11 @@ export const getVideoById = videoId => new Promise((resolve) => {
 export const getVideos = () => new Promise((resolve) => {
   resolve(videos);
 });
+export const createVideo = ({ title, duration, watched }) => {
+  videos.push({
+    id: (new Buffer(`${Date.now()}${title}`, 'utf8').toString('base64')),
+    title,
+    duration,
+    watched,
+  });
+}

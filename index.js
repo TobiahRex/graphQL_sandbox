@@ -10,12 +10,12 @@ import {
   GraphQLBoolean,
   GraphQLList,
 } from 'graphql';
-import { getVideoById, getVideos } from './src/data';
+import { getVideoById, getVideos, createVideo } from './src/data';
 
 const server = express();
 const PORT = process.env.PORT || 3000;
 const videoType = new GraphQLObjectType({
-  name: 'VideoType',
+  name: 'Video',
   description: 'A videon on Egghead.io',
   fields: {
     id: {
@@ -38,7 +38,7 @@ const videoType = new GraphQLObjectType({
 })
 
 const queryType = new GraphQLObjectType({
-  name: 'QueryType',
+  name: 'Query',
   description: 'root query type.',
   fields: {
     videos: {
@@ -58,9 +58,34 @@ const queryType = new GraphQLObjectType({
   }
 })
 
+const mutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'The root mutation type.',
+  fields: {
+    createVideo: {
+      type: videoType,
+      args: {
+        title: {
+          type:  new GraphQLNonNull(GraphQLString),
+          description: 'The title of the video.',
+        },
+        duration: {
+          type: new GraphQLNonNull(GraphQLInt),
+          description: 'The duration of the video.',
+        },
+        watched: {
+          type: new GraphQLNonNull(GraphQLBoolean),
+          description: 'The video has been released.',
+        }
+      },
+      resolve: (_, args) => createVideo(args),
+    }
+  }
+})
+
 const schema = new GraphQLSchema({
   query: queryType,
-  // mutation,
+  mutation: mutationType,
   // subscription,
 })
 
