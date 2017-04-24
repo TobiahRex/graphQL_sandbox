@@ -8,8 +8,9 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
+  GraphQLList,
 } from 'graphql';
-import getVideoById from './src/data';
+import { getVideoById, getVideos } from './src/data';
 
 const server = express();
 const PORT = process.env.PORT || 3000;
@@ -40,6 +41,10 @@ const queryType = new GraphQLObjectType({
   name: 'QueryType',
   description: 'root query type.',
   fields: {
+    videos: {
+      type: new GraphQLList(videoType),
+      resolve: getVideos,
+    },
     video: {
       type: videoType,
       args: {
