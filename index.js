@@ -48,14 +48,7 @@ const queryType = new GraphQLObjectType({
           description: 'The id of the video.',
         }
       },
-      resolve: () => new Promise((resolve) => {
-        resolve({
-          id: 'a',
-          title: 'GraphQL',
-          duration: 180,
-          watched: false,
-        })
-      })
+      resolve: (_, args) => getVideoById(args.id)
     }
   }
 })
