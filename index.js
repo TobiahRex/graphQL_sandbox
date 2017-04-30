@@ -1,16 +1,21 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
 import {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLNonNull,
+  getVideoById,
+  getVideos,
+  createVideo,
+} from './src/data';
+import {
   GraphQLID,
-  GraphQLString,
   GraphQLInt,
-  GraphQLBoolean,
   GraphQLList,
+  GraphQLSchema,
+  GraphQLString,
+  GraphQLNonNull,
+  GraphQLBoolean,
+  GraphQLObjectType,
+  GraphQLInputObjectType,
 } from 'graphql';
-import { getVideoById, getVideos, createVideo } from './src/data';
 
 const server = express();
 const PORT = process.env.PORT || 3000;
@@ -37,6 +42,26 @@ const videoType = new GraphQLObjectType({
     },
   },
 })
+
+const videoInputType = new GraphQLInputObjectType({
+  name: 'VideoInput',
+  description: 'The input object for creating a new video.',
+  fields: {
+    title: {
+      type:  new GraphQLNonNull(GraphQLString),
+      description: 'The title of the video.',
+    },
+    duration: {
+      type: new GraphQLNonNull(GraphQLInt),
+      description: 'The duration of the video.',
+    },
+    watched: {
+      type: new GraphQLNonNull(GraphQLBoolean),
+      description: 'The video has been released.',
+    }
+  }
+})
+
 const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'The root mutation type.',
@@ -44,20 +69,11 @@ const mutationType = new GraphQLObjectType({
     createVideo: {
       type: videoType,
       args: {
-        title: {
-          type:  new GraphQLNonNull(GraphQLString),
-          description: 'The title of the video.',
-        },
-        duration: {
-          type: new GraphQLNonNull(GraphQLInt),
-          description: 'The duration of the video.',
-        },
-        watched: {
-          type: new GraphQLNonNull(GraphQLBoolean),
-          description: 'The video has been released.',
+        video: {
+          type: new GraphQLNonNull(videoInputType),
         }
       },
-      resolve: (_, args) => createVideo(args),
+      resolve: (_, args) => createVideo(args.video),
     }
   }
 })
