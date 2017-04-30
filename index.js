@@ -14,9 +14,10 @@ import { getVideoById, getVideos, createVideo } from './src/data';
 
 const server = express();
 const PORT = process.env.PORT || 3000;
+
 const videoType = new GraphQLObjectType({
   name: 'Video',
-  description: 'A videon on Egghead.io',
+  description: 'A video on Egghead.io',
   fields: {
     id: {
       type: GraphQLID,
@@ -36,28 +37,6 @@ const videoType = new GraphQLObjectType({
     },
   },
 })
-
-const queryType = new GraphQLObjectType({
-  name: 'Query',
-  description: 'root query type.',
-  fields: {
-    videos: {
-      type: new GraphQLList(videoType),
-      resolve: getVideos,
-    },
-    video: {
-      type: videoType,
-      args: {
-        id: {
-          type: new GraphQLNonNull(GraphQLID),
-          description: 'The id of the video.',
-        }
-      },
-      resolve: (_, args) => getVideoById(args.id)
-    }
-  }
-})
-
 const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'The root mutation type.',
@@ -82,6 +61,27 @@ const mutationType = new GraphQLObjectType({
     }
   }
 })
+const queryType = new GraphQLObjectType({
+  name: 'Query',
+  description: 'root query type.',
+  fields: {
+    videos: {
+      type: new GraphQLList(videoType),
+      resolve: getVideos,
+    },
+    video: {
+      type: videoType,
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLID),
+          description: 'The id of the video.',
+        }
+      },
+      resolve: (_, args) => getVideoById(args.id)
+    }
+  }
+})
+
 
 const schema = new GraphQLSchema({
   query: queryType,
